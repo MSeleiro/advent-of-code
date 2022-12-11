@@ -47,7 +47,7 @@ public class Main {
         for (int i = 0; i < ROUNDS; i++) {
             for (Monkey m : monkeys) {
                 while (m.items.size() > 0) {
-                    int worry = m.inspect() / 3;
+                    long worry = (int) (m.inspect() / 3);
                     monkeys.get(m.test(worry)).items.add(worry);
                 }
             }
@@ -63,7 +63,7 @@ public class Main {
         for (int i = 0; i < ROUNDS2; i++) {
             for (Monkey m : monkeys2) {
                 while (m.items.size() > 0) {
-                    int worry = m.inspect() % mod;
+                    long worry = m.inspect() % mod;
                     monkeys2.get(m.test(worry)).items.add(worry);
                 }
             }
@@ -72,11 +72,11 @@ public class Main {
 
     private static void build(String line, BufferedReader reader) throws IOException {
         int num = Integer.parseInt("" + line.charAt(line.length() - 2));
-        LinkedList<Integer> items = new LinkedList<>() {{
+        LinkedList<Long> items = new LinkedList<>() {{
             String[] items = reader.readLine().trim().split(", ");
             items[0] = items[0].replace("Starting items: ", "");
             for (String s : items) {
-                add(Integer.parseInt(s));
+                add(Long.parseLong(s));
             }
         }};
         String opr = reader.readLine().trim().replace("Operation: new = old ", "");
