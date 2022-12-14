@@ -1,5 +1,9 @@
 from functools import cmp_to_key
 
+"""
+--- Day 13: Distress Signal ---
+"""
+
 pairs = []
 
 for line in open("./input.txt").readlines():
