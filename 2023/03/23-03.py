@@ -6,43 +6,37 @@ import re
 
 def part1(lines: list[str]) -> int:
     number_coords = []
-    map = []
-    for line in lines:
+    symbol_idx = []
+    for i, line in enumerate(lines):
         number_coords.append(list(re.finditer(r'\d+', line)))
-        map.append(list(line.strip('\n')))
-
-    symbol_idx = [(i, j) for i, line in enumerate(map) for j, s in enumerate(line) if s != '.' and not s.isdigit()]
+        symbol_idx.extend((i, match.start()) for match in re.finditer(r'[^0123456789.]', line.strip('\n')))
     
     sum = 0
     for i, j in symbol_idx:
-        for line, number in enumerate(number_coords):
-            if i-1 <= line <= i+1:
-                for n in number:
-                    j_low, j_high = n.span()
-                    if j_low - 1 <= j <= j_high:
-                        sum += int(n.group())
+        for numbers in number_coords[i-1:i+2]:
+            for number in numbers:
+                j_low, j_high = number.span()
+                if j_low - 1 <= j <= j_high:
+                    sum += int(number.group())
                     
     return sum
 
 
 def part2(lines: list[str]) -> int:
     number_coords = []
-    map = []
-    for line in lines:
+    symbol_idx = []
+    for i, line in enumerate(lines):
         number_coords.append(list(re.finditer(r'\d+', line)))
-        map.append(list(line.strip('\n')))
-
-    symbol_idx = [(i, j) for i, line in enumerate(map) for j, s in enumerate(line) if s == '*']
+        symbol_idx.extend((i, match.start()) for match in re.finditer(r'\*', line.strip('\n')))
     
     sum = 0
     for i, j in symbol_idx:
         ratio = []
-        for line, number in enumerate(number_coords):
-            if i-1 <= line <= i+1:
-                for n in number:
-                    j_low, j_high = n.span()
-                    if j_low - 1 <= j <= j_high:
-                        ratio.append(int(n.group()))
+        for numbers in number_coords[i-1:i+2]:
+            for number in numbers:
+                j_low, j_high = number.span()
+                if j_low - 1 <= j <= j_high:
+                    ratio.append(int(number.group()))
 
         if len(ratio) == 2:
             sum += ratio[0] * ratio[1]
