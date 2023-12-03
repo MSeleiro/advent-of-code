@@ -8,16 +8,15 @@ def part1(lines: list[str]) -> int:
     number_coords = []
     symbol_idx = []
     for i, line in enumerate(lines):
-        number_coords.append(list(re.finditer(r'\d+', line)))
-        symbol_idx.extend((i, match.start()) for match in re.finditer(r'[^0123456789.]', line.strip('\n')))
+        number_coords.extend((i, match) for match in re.finditer(r'\d+', line))
+        symbol_idx.extend((i, match.start()) for match in re.finditer(r'[^0123456789.\n]', line))
     
     sum = 0
     for i, j in symbol_idx:
-        for numbers in number_coords[i-1:i+2]:
-            for number in numbers:
-                j_low, j_high = number.span()
-                if j_low - 1 <= j <= j_high:
-                    sum += int(number.group())
+        for _, number in filter(lambda x: i-1 <= x[0] <= i+1 , number_coords):
+            j_low, j_high = number.span()
+            if j_low - 1 <= j <= j_high:
+                sum += int(number.group())
                     
     return sum
 
@@ -26,17 +25,16 @@ def part2(lines: list[str]) -> int:
     number_coords = []
     symbol_idx = []
     for i, line in enumerate(lines):
-        number_coords.append(list(re.finditer(r'\d+', line)))
-        symbol_idx.extend((i, match.start()) for match in re.finditer(r'\*', line.strip('\n')))
+        number_coords.extend((i, match) for match in re.finditer(r'\d+', line))
+        symbol_idx.extend((i, match.start()) for match in re.finditer(r'\*', line))
     
     sum = 0
     for i, j in symbol_idx:
         ratio = []
-        for numbers in number_coords[i-1:i+2]:
-            for number in numbers:
-                j_low, j_high = number.span()
-                if j_low - 1 <= j <= j_high:
-                    ratio.append(int(number.group()))
+        for _, number in filter(lambda x: i-1 <= x[0] <= i+1 , number_coords):
+            j_low, j_high = number.span()
+            if j_low - 1 <= j <= j_high:
+                ratio.append(int(number.group()))
 
         if len(ratio) == 2:
             sum += ratio[0] * ratio[1]
