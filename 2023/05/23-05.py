@@ -38,7 +38,7 @@ def part1(lines: list[str]) -> int:
     return min(final.values())
 
 
-def map_ranges(mappings, seeds):
+def map_ranges(mappings: list[tuple], seeds: list[tuple]) -> list[tuple]:
     new_ranges = []
     for seed_range in seeds:
         added = False
