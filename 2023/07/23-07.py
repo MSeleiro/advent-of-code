@@ -35,16 +35,14 @@ def p2_compare_hands(h1: str, h2: str) -> int:
     h1_count, h2_count = Counter(h1[0]), Counter(h2[0])
 
     def updateJ(c: Counter) -> Counter:
-        val = c.pop("J")
+        val = c.pop("J", 0)
         if not c:
             c.update({"A" : val})
         else:
             c[max(c, key=c.get)] += val
 
-    if "J" in h1_count:
-        updateJ(h1_count)
-    if "J" in h2_count:
-        updateJ(h2_count)
+    updateJ(h1_count)
+    updateJ(h2_count)
 
     res = compare_counter(h1_count, h2_count)
     return res if res != 0 else compare_cards(h1[0], h2[0], labels)
