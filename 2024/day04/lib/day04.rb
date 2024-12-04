@@ -17,7 +17,7 @@ def diagonal(letters, size, t)
 end
 
 def diagonals(letters)
-return diagonal(letters, letters.size, 0), diagonal(letters, letters.size, letters.size - 1)
+  return diagonal(letters, letters.size, 0), diagonal(letters, letters.size, letters.size - 1)
 end
 
 def part_1(puzzle)
